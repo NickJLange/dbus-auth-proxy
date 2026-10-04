@@ -3,7 +3,8 @@
 # image from this checkout. Safe to re-run.
 set -eu
 
-repo=$(cd "$(dirname "$0")/.." && pwd -P)
+script=$(readlink -f "$0")
+repo=$(cd "$(dirname "$script")/.." && pwd -P)
 dest=${XDG_CONFIG_HOME:-$HOME/.config}/containers/systemd
 
 # Escape sed replacement metacharacters so the path is inserted literally.

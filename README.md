@@ -39,11 +39,11 @@ systemctl --user start dbus-auth-proxy
 
 `install.sh` copies `quadlet/dbus-auth-proxy.container` and renders `quadlet/dbus-auth-proxy.build.in` (with this checkout's absolute path) into `~/.config/containers/systemd/`. Starting the service builds `localhost/dbus-auth-proxy:latest` via the `dbus-auth-proxy-build` unit, then runs it. To start on boot without logging in, enable lingering: `loginctl enable-linger $USER`.
 
-To update after pulling new code (every start of the service rebuilds the image from the checkout):
+To update after pulling new code, restart the build unit along with the service so the image is rebuilt from the checkout (podman's layer cache keeps this fast):
 
 ```
 git pull
-systemctl --user restart dbus-auth-proxy
+systemctl --user restart dbus-auth-proxy-build dbus-auth-proxy
 ```
 
 If you move the checkout, re-run `./quadlet/install.sh`.

@@ -274,13 +274,15 @@ def handle_sigterm(signum, frame) -> None:
     """
     Treats SIGTERM like Ctrl-C. As PID 1 in a container the process has no
     default SIGTERM handler, so without this `podman stop` has to SIGKILL it.
+    Further SIGTERMs are ignored so they can't interrupt the shutdown cleanup.
     """
+    signal.signal(signal.SIGTERM, signal.SIG_IGN)
     raise KeyboardInterrupt
 
 
 if __name__ == "__main__":
-    signal.signal(signal.SIGTERM, handle_sigterm)
     opts = get_opts()
+    signal.signal(signal.SIGTERM, handle_sigterm)
     try:
         if os.path.exists(opts.client_socket):
             os.remove(opts.client_socket)
