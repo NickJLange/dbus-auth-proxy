@@ -35,6 +35,7 @@ import asyncio
 import logging
 import os
 import re
+import signal
 import struct
 
 from opts import Options, get_opts
@@ -269,7 +270,16 @@ async def run_proxy(opts: Options) -> None:
     await server.serve_forever()
 
 
+def handle_sigterm(signum, frame) -> None:
+    """
+    Treats SIGTERM like Ctrl-C. As PID 1 in a container the process has no
+    default SIGTERM handler, so without this `podman stop` has to SIGKILL it.
+    """
+    raise KeyboardInterrupt
+
+
 if __name__ == "__main__":
+    signal.signal(signal.SIGTERM, handle_sigterm)
     opts = get_opts()
     try:
         if os.path.exists(opts.client_socket):
