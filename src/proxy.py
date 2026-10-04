@@ -26,7 +26,7 @@ same both inside and outside containers.
 All remaining data is forward directly without modification both ways.
 """
 
-from typing import Callable, Optional
+from typing import Awaitable, Callable, Optional
 
 from socket import SO_PEERCRED, SOL_SOCKET
 from asyncio import StreamReader, StreamWriter
@@ -211,7 +211,7 @@ async def client_callback(
 
         await handle_client(auth_data, reader, writer, dbus_soc, buffer_size)
     except PermissionError as e:
-        logging.warn(f"Permission Denied: {e}")
+        logging.warning(f"Permission Denied: {e}")
     finally:
         await writer.drain()
         writer.close()
