@@ -30,7 +30,7 @@ This has been reported in a number of places:
 
 If you're not interested in the details, you can simply run this proxy in a container alongside the container you want dbus for. The image is built locally from this checkout (nothing is pulled from a registry other than the `python:3.13-slim` base image).
 
-Requires podman 5.0+ (for quadlet `.build` units). From a clone of this repo:
+Requires podman 5.2+ (first release with quadlet `.build` units). From a clone of this repo:
 
 ```
 ./quadlet/install.sh
